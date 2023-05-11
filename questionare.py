@@ -112,5 +112,3 @@ while True:
     if event == sg.WIN_CLOSED:
         break
 window.close()
-
-# MARTINA CHIEDE SE SU GITHUB POSSO DIRE CHE IL PYTHON NON SI PUò MODIFICARE
