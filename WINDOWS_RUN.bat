@@ -1,4 +1,4 @@
 
 @echo off
-python  quiz.py
+python3  quiz.py
 pause
