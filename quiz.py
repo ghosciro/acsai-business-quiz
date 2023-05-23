@@ -83,13 +83,14 @@ class QUIZ:
     def setup(self,question_num:int ):
         # read csv file
         df = pd.read_csv(self.path)
-        # select random questions
-        df.sample(n=min(question_num,len(df)))
+        # select random n  questions in random order
+        random_numbers = random.sample(range(0, len(df)), min(question_num,len(df)))
+
         # create dictionary
-        for i in range(0, min(question_num,len(df))):
-            self.quiz[df["Question"][i]] = [
-                df["Correct Answers"][i].split(sep=","),
-                df["Wrong Answers"][i].split(sep=","),
+        for i in range(0, len(random_numbers)):
+            self.quiz[df["Question"][random_numbers[i]]] = [
+                df["Correct Answers"][random_numbers[i]].split(sep=","),
+                df["Wrong Answers"][random_numbers[i]].split(sep=","),
             ]
         print(df)
     
