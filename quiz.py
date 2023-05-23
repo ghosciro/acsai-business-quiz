@@ -16,62 +16,32 @@ class QUIZ:
         self.setup(question_num)
         self.select_num(answer_num)
         self.setup_window()
-        self.Quiz_canvas = Canvas(self.Quiz_window)
-        self.Quiz_scrollbar = Scrollbar(self.Quiz_window, orient="vertical", command=self.Quiz_canvas.yview)
-        self.Quiz_canvas.configure(yscrollcommand=self.Quiz_scrollbar.set)
-        self.Quiz_scrollbar.pack(side="right", fill="y")
-        self.Quiz_canvas.pack(side="left", fill="both", expand=True)
         self.create_widgets()
-
-
-        self.Quiz_canvas.create_window((0, 0), window=self.Quiz_frame, anchor="nw")
-
-        self.Quiz_frame.bind("<Configure>", self.on_frame_configure)
-        self.Quiz_canvas.bind("<Configure>", self.on_canvas_configure)
-
         self.Quiz_window.mainloop()
-    def on_frame_configure(self, event):
-        self.Quiz_canvas.configure(scrollregion=self.Quiz_canvas.bbox("all"))
-
-    def on_canvas_configure(self, event):
-        self.Quiz_canvas.itemconfigure(self.Quiz_frame, width=event.width)
     def get_questions(self):
         return self.questions.keys()    
     def setup_window(self):
         self.Quiz_window = Tk()
         self.Quiz_window.title(f"Business QUIZ - correct answers: 0/{self.correct_answers}")
-        self.Quiz_window.resizable(True, True)
+        self.Quiz_window.resizable(False, False)
         self.Quiz_window.config(bg="black")
-        #insert scroll bar
-        scrollbar=Scrollbar(self.Quiz_window)
-        scrollbar.pack(side=RIGHT,fill=Y)
-
-
-        
-
     def create_widgets(self):
-        #insert scroll bar
-        self.Quiz_frame = Frame(self.Quiz_canvas, bg="black")
         for question in self.quiz.keys():
-            self.Quiz_labels[question] = Label(self.Quiz_frame, text=question, font=("Helvetica", 15), fg="white",
-                                               bg="black")
-            self.Quiz_labels[question].pack(anchor=W)
-            for i, answer in enumerate(self.quiz[question]["all"]):
-                if question not in self.Quiz_checkboxes.keys():
-                    self.Quiz_checkboxes[question] = [[answer, BooleanVar()]]
-                else:
-                    self.Quiz_checkboxes[question].append([answer, BooleanVar()])
+            self.Quiz_labels[question] = Label(self.Quiz_window, text=question, font=("Helvetica", 20),fg="white",bg="black")
 
-                checkbox = Checkbutton(self.Quiz_frame, text=answer, highlightthickness=0,
-                                       variable=self.Quiz_checkboxes[question][i][1], bg="black", fg="white",
-                                       selectcolor="black", activebackground="black", activeforeground="white",
-                                       font=("Helvetica", 10))
+            self.Quiz_labels[question].pack(anchor=W)
+            for i,answer in enumerate(self.quiz[question]["all"]):
+                if question not in self.Quiz_checkboxes.keys():
+                    self.Quiz_checkboxes[question] = [[answer,BooleanVar()]]
+                else:
+                    self.Quiz_checkboxes[question].append([answer,BooleanVar()])
+                    #checkbox with backround black and white text but black checkmark
+                
+                checkbox = Checkbutton(self.Quiz_window, text=answer,highlightthickness=0 ,variable=self.Quiz_checkboxes[question][i][1],bg="black",fg="white",selectcolor="black",activebackground="black",activeforeground="white",font=("Helvetica", 15))
                 checkbox.pack(anchor=W)
                 self.Quiz_checkboxes[question][i].append(checkbox)
-
-        self.Quiz_buttons["Submit"] = Button(self.Quiz_frame, text="Submit", command=self.submit)
+        self.Quiz_buttons["Submit"] = Button(self.Quiz_window, text="Submit", command=self.submit)
         self.Quiz_buttons["Submit"].pack()
-
     def setup(self,question_num:int ):
         # read csv file
         df = pd.read_csv(self.path)
@@ -141,11 +111,8 @@ def main(path :str):
     root = Tk()
     root.title("Business QUIZ")
     root.geometry("500x500")
- 
     root.resizable(False, False)
     root.config(bg="black")
-
-    #insert scroll bar
     label = Label(root, text="How many questions do you want to answer?", font=("Helvetica", 15),fg="white",bg="black")
     label.pack()
     num_questions = IntVar()
@@ -161,5 +128,4 @@ def main(path :str):
     button = Button(root, text="OK", command=lambda: [root.destroy(),QUIZ(path,int(num_questions.get()),int(num.get()))])
     button.pack()
     root.mainloop()
-    
-__name__ == "__main__"and main("question.csv")
+__name__ == "__main__"and main("acsai-business-quiz/question.csv")
