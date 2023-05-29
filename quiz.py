@@ -176,4 +176,4 @@ def main(path :str):
 
 
 if __name__ == "__main__":
-    main("question.csv")
+    main(os.path.join(os.path.dirname(__file__),"questions.csv"))
