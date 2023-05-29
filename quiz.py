@@ -25,7 +25,13 @@ class QUIZ:
         self.Quiz_scrollbar = Scrollbar(self.Quiz_window, orient="vertical", command=self.Quiz_canvas.yview)
         self.Quiz_canvas.configure(yscrollcommand=self.Quiz_scrollbar.set)
         self.Quiz_scrollbar.pack(side="right", fill="y")
+        #add orizontal scrollbar
+        self.Quiz_scrollbar_x = Scrollbar(self.Quiz_window, orient="horizontal", command=self.Quiz_canvas.xview)
+        self.Quiz_canvas.configure(xscrollcommand=self.Quiz_scrollbar_x.set)
+        self.Quiz_scrollbar_x.pack(side="bottom", fill="x")
+
         self.Quiz_canvas.pack(side="left", fill="both", expand=True)
+       
         self.create_widgets()
 
 
@@ -63,7 +69,7 @@ class QUIZ:
     def create_widgets(self):
         self.Quiz_frame = Frame(self.Quiz_canvas, bg="black")
         for i,question in enumerate(self.quiz.keys()):
-            self.Quiz_labels[question] = Label(self.Quiz_frame, text=question, font=("Helvetica", 20), fg="white",bg="black")
+            self.Quiz_labels[question] = Label(self.Quiz_frame, text=question, font=("Helvetica", 15), fg="white",bg="black")
             self.Quiz_labels[question].pack(anchor=W)
             for i, answer in enumerate(self.quiz[question]["all"]):
                 if question not in self.Quiz_checkboxes.keys():
@@ -74,7 +80,7 @@ class QUIZ:
                 checkbox = Checkbutton(self.Quiz_frame, text=answer, highlightthickness=0,
                                        variable=self.Quiz_checkboxes[question][i][1], bg="black", fg="white",
                                        selectcolor="black", activebackground="black", activeforeground="white",
-                                       font=("Helvetica", 15))
+                                       font=("Helvetica", 10))
                 checkbox.pack(anchor=W)
                 self.Quiz_checkboxes[question][i].append(checkbox)
         self.Quiz_buttons["Submit"] = Button(self.Quiz_frame, text="Submit", command=self.submit)
